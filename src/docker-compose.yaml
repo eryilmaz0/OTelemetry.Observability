@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  backend_for_frontend:
+    image: backend_for_frontend
+    build:
+      context: .
+      dockerfile: Services/DistributedTracing.BFF/Dockerfile
+  
+  
+  customer_api:
+    image: customer_api
+    build:
+      context: .
+      dockerfile: Services/DistributedTracing.Customer.API/Dockerfile
+  
+  
+  notification_api:
+    image: notification_api
+    build:
+      context: .
+      dockerfile: Services/DistributedTracing.Notification.API/Dockerfile
+  
+  
+  customer_db:
+    image: postgres
+  
+  
+  notification_db:
+    image: redis
+
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine    

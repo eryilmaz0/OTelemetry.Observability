@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  backend_for_frontend:
+    image: backend_for_frontend
+    container_name: backend_for_frontend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      - customer_api
+      - rabbitmq
+      - elasticsearch
+    ports:
+      - "8001:80"
+  
+  
+  customer_api:
+    image: customer_api
+    container_name: customer_api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      - customer_db
+      - rabbitmq
+      - elasticsearch
+    ports:
+      - "8002:80"
+  
+  
+  notification_api:
+    image: notification_api
+    container_name: notification_api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      - notification_db
+      - rabbitmq
+      - elasticsearch
+    ports:
+      - "8003:80"
+  
+  
+  customer_db:
+    image: postgres
+    container_name: customer_db
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin1234
+      - POSTGRES_DB=customer_db
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+  
+  
+  notification_db:
+    image: redis
+    container_name: notification_db
+    restart: always
+    ports:
+      - 6379:6379
+
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin1234
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
