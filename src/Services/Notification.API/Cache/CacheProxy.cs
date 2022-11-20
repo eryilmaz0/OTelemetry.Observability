@@ -9,6 +9,12 @@ public class CacheProxy : ICacheProxy
     private readonly IDatabase _database;
     
     
+    public CacheProxy(IConnectionMultiplexer connection)
+    {
+        _connection = connection;
+        _database = connection.GetDatabase(0);
+    }
+    
     public async Task AddAsync(Model.Notification notification)
     {
         var guidId = Guid.NewGuid().ToString();

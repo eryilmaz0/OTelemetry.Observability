@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-CacheProxyHelper.ConnectCacheProxy(builder.Services, builder.Configuration);
+await CacheProxyHelper.ConnectCacheProxy(builder.Services, builder.Configuration);
 builder.Services.AddSingleton<ICacheProxy, CacheProxy>();
 
 builder.Services.AddMassTransit(x=>
@@ -38,13 +38,9 @@ builder.Services.AddMassTransit(x=>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
-app.UseHttpsRedirection();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthorization();
 

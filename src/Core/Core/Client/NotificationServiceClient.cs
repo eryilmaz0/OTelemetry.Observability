@@ -16,7 +16,7 @@ public class NotificationServiceClient : INotificationServiceClient
     public async Task<ClientResponse> DisableCustomerNotificationsAsync(DisableCustomerNotificationModel requestModel)
     {
         ClientResponse result = new();
-        var response = await _client.PostAsJsonAsync<DisableCustomerNotificationModel>("customerNotifications", requestModel);
+        var response = await _client.PostAsJsonAsync<DisableCustomerNotificationModel>("notifications", requestModel);
         result.Succeed = response.IsSuccessStatusCode;
         result.Message = response.IsSuccessStatusCode ? "Customer Notifications Disabled." : "Customer Notifications Not Disabled.";
         return result;

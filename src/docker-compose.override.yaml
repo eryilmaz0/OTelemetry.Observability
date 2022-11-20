@@ -9,7 +9,6 @@ services:
     depends_on:
       - customer_api
       - rabbitmq
-      - elasticsearch
     ports:
       - "8001:80"
   
@@ -22,7 +21,6 @@ services:
     depends_on:
       - customer_db
       - rabbitmq
-      - elasticsearch
     ports:
       - "8002:80"
   
@@ -35,7 +33,6 @@ services:
     depends_on:
       - notification_db
       - rabbitmq
-      - elasticsearch
     ports:
       - "8003:80"
   
@@ -72,3 +69,7 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+  
+
+volumes:
+  postgres_data:

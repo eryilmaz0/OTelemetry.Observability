@@ -19,7 +19,7 @@ public class CustomerNotificationDisabledEventHandler : IConsumer<CustomerNotifi
     {
         var @event = context.Message;
         var customer = await _context.Customers.FirstOrDefaultAsync(x => x.Email == @event.Email);
-        customer.NotificationsDisabled = false;
+        customer.NotificationsDisabled = true;
         await _context.SaveChangesAsync();
     }
 }
