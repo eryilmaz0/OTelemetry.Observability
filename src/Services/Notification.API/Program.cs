@@ -1,3 +1,6 @@
+using Customer.API.Helper;
+using Notification.API.Cache;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+CacheProxyHelper.ConnectCacheProxy(builder.Services, builder.Configuration);
+builder.Services.AddSingleton<ICacheProxy, CacheProxy>();
 
 var app = builder.Build();
 
