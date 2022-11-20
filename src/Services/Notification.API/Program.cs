@@ -1,5 +1,7 @@
 using Customer.API.Helper;
+using MassTransit;
 using Notification.API.Cache;
+using Notification.API.EventConsumer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,26 @@ builder.Services.AddSwaggerGen();
 
 CacheProxyHelper.ConnectCacheProxy(builder.Services, builder.Configuration);
 builder.Services.AddSingleton<ICacheProxy, CacheProxy>();
+
+builder.Services.AddMassTransit(x=>
+{
+    x.AddConsumer<CustomerCreatedEventHandler>();
+    
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(builder.Configuration.GetSection("EventBusOptions:HostUrl").Value, host =>
+        {
+            host.Username(builder.Configuration.GetSection("EventBusOptions:UserName").Value);
+            host.Password(builder.Configuration.GetSection("EventBusOptions:Password").Value);
+        });
+        
+        cfg.ReceiveEndpoint(builder.Configuration.GetSection("EventBusOptions:QueueName").Value, consumer =>
+        {
+            consumer.ConfigureConsumer<CustomerCreatedEventHandler>(context);
+        });
+    });
+});
+
 
 var app = builder.Build();
 

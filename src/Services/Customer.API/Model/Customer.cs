@@ -8,4 +8,5 @@ public class Customer
     public string LastName { get; set; }
     public int Age { get; set; }
     public DateTime Created { get; set; }
+    public bool NotificationsDisabled { get; set; } = false;
 }
