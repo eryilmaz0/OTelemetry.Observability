@@ -9,7 +9,7 @@ COPY ["Services/BackendForFrontend/BackendForFrontend.csproj", "Services/Backend
 COPY ["Core/Core/Core.csproj", "Core/Core/"]
 RUN dotnet restore "Services/BackendForFrontend/BackendForFrontend.csproj"
 COPY . .
-WORKDIR "/src/BackendForFrontend"
+WORKDIR "/src/Services/BackendForFrontend"
 RUN dotnet build "BackendForFrontend.csproj" -c Release -o /app/build
 
 FROM build AS publish

@@ -9,7 +9,7 @@ COPY ["Services/Customer.API/Customer.API.csproj", "Services/Customer.API/"]
 COPY ["Core/Core/Core.csproj", "Core/Core/"]
 RUN dotnet restore "Services/Customer.API/Customer.API.csproj"
 COPY . .
-WORKDIR "/src/Customer.API"
+WORKDIR "/src/Services/Customer.API"
 RUN dotnet build "Customer.API.csproj" -c Release -o /app/build
 
 FROM build AS publish

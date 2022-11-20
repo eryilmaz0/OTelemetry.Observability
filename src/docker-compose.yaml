@@ -5,21 +5,21 @@ services:
     image: backend_for_frontend
     build:
       context: .
-      dockerfile: Services/DistributedTracing.BFF/Dockerfile
+      dockerfile: Services/BackendForFrontend/Dockerfile
   
   
   customer_api:
     image: customer_api
     build:
       context: .
-      dockerfile: Services/DistributedTracing.Customer.API/Dockerfile
+      dockerfile: Services/Customer.API/Dockerfile
   
   
   notification_api:
     image: notification_api
     build:
       context: .
-      dockerfile: Services/DistributedTracing.Notification.API/Dockerfile
+      dockerfile: Services/Notification.API/Dockerfile
   
   
   customer_db:

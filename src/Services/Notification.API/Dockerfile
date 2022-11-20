@@ -9,7 +9,7 @@ COPY ["Services/Notification.API/Notification.API.csproj", "Services/Notificatio
 COPY ["Core/Core/Core.csproj", "Core/Core/"]
 RUN dotnet restore "Services/Notification.API/Notification.API.csproj"
 COPY . .
-WORKDIR "/src/Notification.API"
+WORKDIR "/src/Services/Notification.API"
 RUN dotnet build "Notification.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
