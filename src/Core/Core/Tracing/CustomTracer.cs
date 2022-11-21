@@ -21,7 +21,16 @@ public class OpenTelemetryCustomTracer : ICustomTracer
         }
         
         activSpan.SetStatus(Status.Ok);
+        SetTraceId(activSpan);
         activSpan.End();
+    }
+    
+    
+    private static void SetTraceId(TelemetrySpan span)
+    {
+        span.SetAttribute("TraceId", Tracer.CurrentSpan.Context.TraceId.ToHexString());
+        span.SetAttribute("SpanId", Tracer.CurrentSpan.Context.SpanId.ToHexString());
+        span.SetAttribute("ParentSpanId", Tracer.CurrentSpan.ParentSpanId.ToHexString());
     }
 }
 
