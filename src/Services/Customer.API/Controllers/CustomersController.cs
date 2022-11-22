@@ -56,6 +56,6 @@ public class CustomersController : ControllerBase
         _tracer.Trace(OperationType.EventPublish, "Publishing Event!", eventPublishMetrics);
         
         await _eventPublisher.Publish(@event);
-        return Ok();
+        return Ok(new{Status = 200, Message="Customer Added."});
     }
 }
