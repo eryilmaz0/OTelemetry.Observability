@@ -32,3 +32,9 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management-alpine    
+    
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.60.0
+    
+  jaeger:
+    image: jaegertracing/all-in-one:latest
