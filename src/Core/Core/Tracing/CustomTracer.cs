@@ -41,7 +41,7 @@ public static class OpenTelemetryTracerBuilder
     private readonly static IDictionary<OperationType, string> _metricTracerNames = new Dictionary<OperationType, string>()
     {
         { OperationType.EventPublish , "MassTransit"},
-        { OperationType.HandledEvent , "MassTransit"},
+        { OperationType.HandleEvent , "MassTransit"},
         { OperationType.ActionExecution , "Performance Metric"},
         { OperationType.Other , "Custom"},
     };

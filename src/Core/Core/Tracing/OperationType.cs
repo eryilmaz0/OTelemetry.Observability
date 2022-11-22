@@ -3,7 +3,7 @@ namespace Core.Tracing;
 public enum OperationType
 {
     EventPublish = 1,
-    HandledEvent,
+    HandleEvent,
     ActionExecution,
     Other = 99
 }

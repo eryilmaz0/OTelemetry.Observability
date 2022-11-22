@@ -1,4 +1,6 @@
 using Core.Event;
+using Core.Model;
+using Core.Tracing;
 using Customer.API.Context;
 using Customer.API.EventConsumer;
 using MassTransit;
@@ -30,6 +32,10 @@ builder.Services.AddMassTransit(x=>
         });
     });
 });
+
+TracingOptions tracingOptions = builder.Configuration.GetSection("TracingOptions").Get<TracingOptions>();
+builder.Services.AddTracingSupport(tracingOptions);
+builder.Services.AddCustomTracerSupport();
 
 var app = builder.Build();
 
