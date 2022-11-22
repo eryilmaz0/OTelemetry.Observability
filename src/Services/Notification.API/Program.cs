@@ -1,3 +1,5 @@
+using Core.Model;
+using Core.Tracing;
 using Customer.API.Helper;
 using MassTransit;
 using Notification.API.Cache;
@@ -35,6 +37,9 @@ builder.Services.AddMassTransit(x=>
 });
 
 
+TracingOptions tracingOptions = builder.Configuration.GetSection("TracingOptions").Get<TracingOptions>();
+builder.Services.AddTracingSupport(tracingOptions);
+builder.Services.AddCustomTracerSupport();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
