@@ -12,7 +12,6 @@ public static class TracingExtension
 {
     public static IServiceCollection AddTracingSupport(this IServiceCollection services, TracingOptions options)
     {
-
         services.AddOpenTelemetryTracing((config) =>
         {
             config.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName: options.ServiceName, serviceVersion: options.Version));
@@ -53,7 +52,7 @@ public static class TracingExtension
             config.AddConsoleExporter();
             config.AddOtlpExporter(configuration =>
             {
-                configuration.Endpoint = new Uri(options.OtlpExporterUrl);
+                configuration.Endpoint = new Uri(options.OtlpExportUrl);
                 configuration.Protocol = OtlpExportProtocol.Grpc;
             });
         });

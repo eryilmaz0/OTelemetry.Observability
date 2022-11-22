@@ -4,7 +4,7 @@ public class TracingOptions
 {
     public string ServiceName { get; set; }
     public string Version { get; set; }
-    public string OtlpExporterUrl { get; set; }
+    public string OtlpExportUrl { get; set; }
     public bool AddDatabaseTracing { get; set; } = false;
     public bool AddHttpClientTracing { get; set; } = false;
     public bool AddRedisTracing { get; set; } = false;
