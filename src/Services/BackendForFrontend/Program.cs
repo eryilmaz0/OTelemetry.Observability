@@ -1,5 +1,7 @@
 using Core.Client;
+using Core.Metric;
 using Core.Model;
+using Core.Model.OptionModel;
 using Core.Tracing;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,9 +24,11 @@ builder.Services.AddHttpClient<ICustomerServiceClient, CustomerServiceClient>(co
     config.BaseAddress = new Uri(builder.Configuration.GetValue<string>("CustomerServiceUrl"));
 });
 
-TracingOptions tracingOptions = builder.Configuration.GetSection("TracingOptions").Get<TracingOptions>();
-builder.Services.AddTracingSupport(tracingOptions);
-builder.Services.AddCustomTracerSupport();
+//TracingOptions tracingOptions = builder.Configuration.GetSection("TracingOptions").Get<TracingOptions>();
+//builder.Services.AddTracingSupport(tracingOptions);
+//builder.Services.AddCustomTracerSupport();
+
+builder.AddMetricSupport();
 
 
 var app = builder.Build();

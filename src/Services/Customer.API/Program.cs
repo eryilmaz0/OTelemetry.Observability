@@ -1,5 +1,7 @@
 using Core.Event;
+using Core.Metric;
 using Core.Model;
+using Core.Model.OptionModel;
 using Core.Tracing;
 using Customer.API.Context;
 using Customer.API.EventConsumer;
@@ -36,6 +38,8 @@ builder.Services.AddMassTransit(x=>
 TracingOptions tracingOptions = builder.Configuration.GetSection("TracingOptions").Get<TracingOptions>();
 builder.Services.AddTracingSupport(tracingOptions);
 builder.Services.AddCustomTracerSupport();
+
+builder.AddMetricSupport();
 
 var app = builder.Build();
 

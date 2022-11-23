@@ -1,4 +1,5 @@
 using Core.Model;
+using Core.Model.OptionModel;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using OpenTelemetry.Exporter;
@@ -14,7 +15,7 @@ public static class TracingExtension
     {
         services.AddOpenTelemetryTracing((config) =>
         {
-            config.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName: options.ServiceName, serviceVersion: options.Version));
+            config.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName: options.ServiceName, serviceVersion: options.ServiceVersion));
             config.AddSource(options.ServiceName);
             config.AddAspNetCoreInstrumentation(options =>
             {

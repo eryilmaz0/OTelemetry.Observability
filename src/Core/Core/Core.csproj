@@ -20,7 +20,6 @@
 
     <ItemGroup>
       <Folder Include="Logging" />
-      <Folder Include="Metric" />
     </ItemGroup>
 
 </Project>
