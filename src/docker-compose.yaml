@@ -38,3 +38,6 @@ services:
     
   jaeger:
     image: jaegertracing/all-in-one:latest
+    
+  prometheus:
+    image: prom/prometheus:latest
