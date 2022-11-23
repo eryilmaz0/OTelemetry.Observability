@@ -24,11 +24,13 @@ builder.Services.AddHttpClient<ICustomerServiceClient, CustomerServiceClient>(co
     config.BaseAddress = new Uri(builder.Configuration.GetValue<string>("CustomerServiceUrl"));
 });
 
-//TracingOptions tracingOptions = builder.Configuration.GetSection("TracingOptions").Get<TracingOptions>();
-//builder.Services.AddTracingSupport(tracingOptions);
-//builder.Services.AddCustomTracerSupport();
+//builder.AddMetricSupport();
 
-builder.AddMetricSupport();
+TracingOptions tracingOptions = builder.Configuration.GetSection("TracingOptions").Get<TracingOptions>();
+builder.Services.AddTracingSupport(tracingOptions);
+builder.Services.AddCustomTracerSupport();
+
+
 
 
 var app = builder.Build();

@@ -31,7 +31,7 @@ public static class MetricExtensions
                 string otlpEndpoint = options.OtlpExportUrl;
                 opt.Endpoint = new Uri(otlpEndpoint);
                 opt.Protocol = OtlpExportProtocol.Grpc;
-            });
+            }); 
         });
 
         return services;

@@ -35,11 +35,13 @@ builder.Services.AddMassTransit(x=>
     });
 });
 
+//builder.AddMetricSupport();
+
 TracingOptions tracingOptions = builder.Configuration.GetSection("TracingOptions").Get<TracingOptions>();
 builder.Services.AddTracingSupport(tracingOptions);
 builder.Services.AddCustomTracerSupport();
 
-builder.AddMetricSupport();
+
 
 var app = builder.Build();
 
