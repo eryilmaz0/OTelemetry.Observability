@@ -6,11 +6,11 @@ services:
     container_name: backend_for_frontend
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-    depends_on:
-      - customer_api
-      - rabbitmq
     ports:
       - "8001:80"
+    depends_on:
+      - customer_api
+      - notification_api
   
   
   customer_api:
@@ -18,11 +18,12 @@ services:
     container_name: customer_api
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-    depends_on:
-      - customer_db
-      - rabbitmq
     ports:
       - "8002:80"
+    depends_on:
+      - customer_db
+      - otel-collector
+      - rabbitmq
   
   
   notification_api:
@@ -30,11 +31,12 @@ services:
     container_name: notification_api
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "8003:80"
     depends_on:
       - notification_db
       - rabbitmq
-    ports:
-      - "8003:80"
+      - otel-collector
   
   
   customer_db:
@@ -102,7 +104,5 @@ services:
     ports:
       - "9090:9090"
   
-  
-
 volumes:
   postgres_data:

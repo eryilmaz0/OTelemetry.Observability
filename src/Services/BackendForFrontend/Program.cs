@@ -3,6 +3,10 @@ using Core.Metric;
 using Core.Model;
 using Core.Model.OptionModel;
 using Core.Tracing;
+using OpenTelemetry.Exporter;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,11 +28,91 @@ builder.Services.AddHttpClient<ICustomerServiceClient, CustomerServiceClient>(co
     config.BaseAddress = new Uri(builder.Configuration.GetValue<string>("CustomerServiceUrl"));
 });
 
-//builder.AddMetricSupport();
+/*builder.Services.AddOpenTelemetryMetrics(config =>
+{
+    config.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("Backend For Frontend", serviceVersion:"1.0"));
+    config.AddMeter("Metrics")
+        .AddAspNetCoreInstrumentation()
+        .AddRuntimeInstrumentation()    
+        .AddHttpClientInstrumentation()
+        .AddConsoleExporter()
+        .AddOtlpExporter(opt =>
+        {
+            string otlpEndpoint = "http://otel-collector:4317";
+            opt.Endpoint = new Uri(otlpEndpoint);
+            opt.Protocol = OtlpExportProtocol.Grpc;
+        });
+}); */
 
-TracingOptions tracingOptions = builder.Configuration.GetSection("TracingOptions").Get<TracingOptions>();
-builder.Services.AddTracingSupport(tracingOptions);
+//TracingOptions tracingOptions = builder.Configuration.GetSection("TracingOptions").Get<TracingOptions>();
+//builder.Services.AddTracingSupport(tracingOptions);
+
+
+builder.Services.AddOpenTelemetryMetrics(config =>
+{
+    config.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("Backend For Frontend", serviceVersion:"1.0"));
+    config.AddAspNetCoreInstrumentation()
+        .AddRuntimeInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddConsoleExporter()
+        .AddOtlpExporter(options =>
+        {
+            options.Endpoint = new Uri("http://otel-collector:4317");
+            options.Protocol = OtlpExportProtocol.Grpc;
+        });
+}); 
+
+
+builder.Services.AddOpenTelemetryTracing(config => config
+    .AddSource("Backend For Frontend")
+    .AddSource("Performance Metric")
+    .AddSource("Custom")
+    .AddSource("MassTransit")
+    .AddConsoleExporter()
+    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName: "Backend For Frontend", serviceVersion: "1.0"))
+    .AddOtlpExporter(options =>
+    {
+        options.Endpoint = new Uri("http://otel-collector:4317");
+        options.Protocol = OtlpExportProtocol.Grpc;
+    })
+    .AddAspNetCoreInstrumentation(options =>
+    {
+        options.RecordException = true;
+        options.Filter = (req) =>
+            !req.Request.Path.ToUriComponent().Contains("index.html", StringComparison.OrdinalIgnoreCase) &&
+            !req.Request.Path.ToUriComponent().Contains("swagger", StringComparison.OrdinalIgnoreCase);
+    })
+    .AddHttpClientInstrumentation(options =>
+    {
+        options.RecordException = true;
+    })); 
+
 builder.Services.AddCustomTracerSupport();
+
+/*builder.Services.AddOpenTelemetryTracing(config => config
+    .AddSource("Backend For Frontend")
+    .AddSource("Performance Metric")
+    .AddSource("Custom")
+    .AddSource("MassTransit")
+    .SetResourceBuilder(
+        ResourceBuilder.CreateDefault().AddService(serviceName: "Backend For Frontend", serviceVersion: "1.0"))
+    .AddOtlpExporter(options =>
+    {
+        string otlpEndpoint = "http://otel-collector:4317";
+        options.Endpoint = new Uri(otlpEndpoint);
+        options.Protocol = OtlpExportProtocol.Grpc;
+    })
+    .AddAspNetCoreInstrumentation(options =>
+    {
+        options.RecordException = true;
+        options.Filter = (req) =>
+            !req.Request.Path.ToUriComponent().Contains("index.html", StringComparison.OrdinalIgnoreCase) &&
+            !req.Request.Path.ToUriComponent().Contains("swagger", StringComparison.OrdinalIgnoreCase);
+    })
+    .AddHttpClientInstrumentation(options =>
+    {
+        options.RecordException = true;
+    })); */
 
 
 
