@@ -7,19 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-    <PackageReference Include="Npgsql.OpenTelemetry" Version="6.0.7" />
-    <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.4.0-alpha.2" />
-    <PackageReference Include="OpenTelemetry.Exporter.Jaeger" Version="1.4.0-beta.2" />
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.0.0-rc9.8" />
     <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc9.8" />
-    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc9.8" />
-    <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.0.0" />
-    <PackageReference Include="OpenTelemetry.Instrumentation.StackExchangeRedis" Version="1.0.0-rc9.7" />
-    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.2.0-beta1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Logging" />
     </ItemGroup>
 
 </Project>
