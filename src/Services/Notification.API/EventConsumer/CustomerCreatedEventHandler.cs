@@ -10,11 +10,13 @@ public class CustomerCreatedEventHandler : IConsumer<CustomerCreatedEvent>
 {
     private readonly ICacheProxy _cacheProxy;
     private readonly ICustomTracer _tracer;
+    private readonly ILogger<CustomerCreatedEventHandler> _logger;
 
-    public CustomerCreatedEventHandler(ICacheProxy cacheProxy, ICustomTracer tracer)
+    public CustomerCreatedEventHandler(ICacheProxy cacheProxy, ICustomTracer tracer, ILogger<CustomerCreatedEventHandler> logger)
     {
         _cacheProxy = cacheProxy;
         _tracer = tracer;
+        _logger = logger;
     }
     
     
@@ -29,6 +31,7 @@ public class CustomerCreatedEventHandler : IConsumer<CustomerCreatedEvent>
         };
 
         _tracer.Trace(OperationType.HandleEvent, "Handled Event!", eventPublishMetrics);
+        _logger.LogInformation("Handled Event!", @createdUser);
         Model.Notification newNotification = new()
         {
             Email = createdUser.Email,
@@ -36,5 +39,6 @@ public class CustomerCreatedEventHandler : IConsumer<CustomerCreatedEvent>
         };
 
         await _cacheProxy.AddAsync(newNotification);
+        _logger.LogInformation("Customer Created Notification Added", @createdUser);
     }
 }

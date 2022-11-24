@@ -12,10 +12,12 @@ public class NotificationsController : ControllerBase
 {
     private readonly INotificationServiceClient _notificationServiceClient;
     private readonly ICustomTracer _tracer;
-    public NotificationsController(INotificationServiceClient notificationServiceClient, ICustomTracer tracer)
+    private readonly ILogger<NotificationsController> _logger;
+    public NotificationsController(INotificationServiceClient notificationServiceClient, ICustomTracer tracer, ILogger<NotificationsController> logger)
     {
         _notificationServiceClient = notificationServiceClient;
         _tracer = tracer;
+        _logger = logger;
     }
     
     
@@ -25,6 +27,7 @@ public class NotificationsController : ControllerBase
         Stopwatch timer = new();
         timer.Start();
         
+        _logger.LogInformation("Disable Cutomer Notifications Request Started");
         var result = await _notificationServiceClient.DisableCustomerNotificationsAsync(request);
         
         timer.Stop();
@@ -37,6 +40,7 @@ public class NotificationsController : ControllerBase
         };
         
         _tracer.Trace(OperationType.ActionExecution, "Action Executed!", executionMetrics);
+        _logger.LogInformation("Disable Cutomer Notifications Request Completed");
         
         if (!result.Succeed)
             return BadRequest(result);

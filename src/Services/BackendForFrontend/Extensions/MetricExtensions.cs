@@ -15,7 +15,6 @@ public static class MetricExtensions
             config.AddAspNetCoreInstrumentation()
                 .AddRuntimeInstrumentation()
                 .AddHttpClientInstrumentation()
-                .AddConsoleExporter()
                 .AddOtlpExporter(config =>
                 {
                     config.Endpoint = new Uri(options.OtlpExportUrl);

@@ -42,9 +42,10 @@ builder.Services.AddMassTransit(x=>
 
 TracingOptions tracingOptions = builder.Configuration.GetSection("TracingOptions").Get<TracingOptions>();
 MetricOptions metricOptions = builder.Configuration.GetSection("MetricOptions").Get<MetricOptions>();
+LoggingOptions loggingOptions = builder.Configuration.GetSection("LoggingOptions").Get<LoggingOptions>();
 builder.Services.AddMetricSupport(metricOptions);
 builder.Services.AddTracingSupport(tracingOptions);
-
+builder.Logging.AddLoggingSupport(loggingOptions);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

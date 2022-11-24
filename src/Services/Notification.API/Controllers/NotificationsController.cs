@@ -15,12 +15,14 @@ public class NotificationsController : ControllerBase
     private readonly ICacheProxy _cacheProxy;
     private readonly IPublishEndpoint _eventPublisher;
     private readonly ICustomTracer _tracer;
+    private readonly ILogger<NotificationsController> _logger;
 
-    public NotificationsController(ICacheProxy cacheProxy, IPublishEndpoint eventPublisher, ICustomTracer tracer)
+    public NotificationsController(ICacheProxy cacheProxy, IPublishEndpoint eventPublisher, ICustomTracer tracer, ILogger<NotificationsController> logger)
     {
         _cacheProxy = cacheProxy;
         _eventPublisher = eventPublisher;
         _tracer = tracer;
+        _logger = logger;
     }
 
     [HttpPost]
@@ -33,6 +35,7 @@ public class NotificationsController : ControllerBase
         };
 
         await _cacheProxy.AddAsync(newNotification);
+        _logger.LogInformation("Disable Notification Record Added.");
 
         CustomerNotificationsDisabledEvent @event = new()
         {
@@ -46,6 +49,7 @@ public class NotificationsController : ControllerBase
             { "EventType", @event.GetType().Name }
         };
         _tracer.Trace(OperationType.EventPublish, "Publishing Event!", eventPublishMetrics);
+        _logger.LogInformation("Event Published!", @event);
         
         await _eventPublisher.Publish(@event);
         return Ok(new{Status = 200, Message="Customer Notifications Disabled."});

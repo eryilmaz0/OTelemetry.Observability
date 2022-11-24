@@ -12,11 +12,13 @@ public class CustomerController : Controller
 {
     private readonly ICustomerServiceClient _customerServiceClient;
     private readonly ICustomTracer _tracer;
+    private readonly ILogger<CustomerController> _logger;
 
-    public CustomerController(ICustomerServiceClient customerServiceClient, ICustomTracer tracer)
+    public CustomerController(ICustomerServiceClient customerServiceClient, ICustomTracer tracer, ILogger<CustomerController> logger)
     {
         _customerServiceClient = customerServiceClient;
         _tracer = tracer;
+        _logger = logger;
     }
     
     
@@ -26,6 +28,7 @@ public class CustomerController : Controller
         Stopwatch timer = new();
         timer.Start();
         
+        _logger.LogInformation("Create Cutomer Request Started");
         var result = await _customerServiceClient.CreateCustomerAsync(request);
       
         
@@ -39,7 +42,7 @@ public class CustomerController : Controller
         };
         
         _tracer.Trace(OperationType.ActionExecution, "Action Executed!", executionMetrics);
-        
+        _logger.LogInformation("Create Cutomer Request Completed.");
         if (!result.Succeed)
             return BadRequest(result);
         return Ok(result);

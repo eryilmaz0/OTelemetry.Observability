@@ -16,12 +16,14 @@ public class CustomersController : ControllerBase
     private readonly AppDbContext _context;
     private readonly IPublishEndpoint _eventPublisher;
     private readonly ICustomTracer _tracer;
+    private readonly ILogger<CustomersController> _logger;
 
-    public CustomersController(AppDbContext context, IPublishEndpoint eventPublisher, ICustomTracer tracer)
+    public CustomersController(AppDbContext context, IPublishEndpoint eventPublisher, ICustomTracer tracer, ILogger<CustomersController> logger)
     {
         _context = context;
         _eventPublisher = eventPublisher;
         _tracer = tracer;
+        _logger = logger;
     }
     
     
@@ -38,6 +40,7 @@ public class CustomersController : ControllerBase
         });
 
         await _context.SaveChangesAsync();
+        _logger.LogInformation("Customer Added");
 
         CustomerCreatedEvent @event = new()
         {
@@ -54,8 +57,9 @@ public class CustomersController : ControllerBase
             { "EventType", @event.GetType().Name }
         };
         _tracer.Trace(OperationType.EventPublish, "Publishing Event!", eventPublishMetrics);
-        
+
         await _eventPublisher.Publish(@event);
+        _logger.LogInformation("Event Published!", @event);
         return Ok(new{Status = 200, Message="Customer Added."});
     }
 }
