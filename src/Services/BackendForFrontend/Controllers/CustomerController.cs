@@ -28,7 +28,7 @@ public class CustomerController : Controller
         Stopwatch timer = new();
         timer.Start();
         
-        _logger.LogInformation("Create Cutomer Request Started");
+        _logger.LogInformation("Create Customer Request Started");
         var result = await _customerServiceClient.CreateCustomerAsync(request);
       
         
@@ -42,7 +42,7 @@ public class CustomerController : Controller
         };
         
         _tracer.Trace(OperationType.ActionExecution, "Action Executed!", executionMetrics);
-        _logger.LogInformation("Create Cutomer Request Completed.");
+        _logger.LogInformation("Create Customer Request Completed.");
         if (!result.Succeed)
             return BadRequest(result);
         return Ok(result);

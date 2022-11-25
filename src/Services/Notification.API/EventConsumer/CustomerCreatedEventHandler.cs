@@ -31,7 +31,7 @@ public class CustomerCreatedEventHandler : IConsumer<CustomerCreatedEvent>
         };
 
         _tracer.Trace(OperationType.HandleEvent, "Handled Event!", eventPublishMetrics);
-        _logger.LogInformation("Handled Event!", @createdUser);
+        _logger.LogInformation($"Handled Event! {JsonSerializer.Serialize(createdUser)}");
         Model.Notification newNotification = new()
         {
             Email = createdUser.Email,

@@ -2,6 +2,7 @@ using Core.Model.OptionModel;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Resources;
+using Serilog;
 
 namespace Customer.API.Extensions;
 
@@ -24,7 +25,7 @@ public static class LoggingExtensions
                 opt.Protocol = OtlpExportProtocol.Grpc;
             });
         });
-
+        
         return logger;
     } 
 }

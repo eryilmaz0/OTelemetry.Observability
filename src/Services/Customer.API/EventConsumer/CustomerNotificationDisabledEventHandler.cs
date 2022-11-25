@@ -23,19 +23,19 @@ public class CustomerNotificationDisabledEventHandler : IConsumer<CustomerNotifi
     
     public async Task Consume(ConsumeContext<CustomerNotificationsDisabledEvent> context)
     {
-        var @event = context.Message;
+        var customerNotificaticationsDisabledEvent = context.Message;
 
         Dictionary<string, string> eventPublishMetrics = new()
         {
-            { "HandledEvent", JsonSerializer.Serialize(@event)},
-            { "EventType", @event.GetType().Name}
+            { "HandledEvent", JsonSerializer.Serialize(customerNotificaticationsDisabledEvent)},
+            { "EventType", customerNotificaticationsDisabledEvent.GetType().Name}
         };
         _tracer.Trace(OperationType.HandleEvent, "Handled Event!", eventPublishMetrics);
-        _logger.LogInformation("Handled Event!", @event);
+        _logger.LogInformation($"Handled Event! {JsonSerializer.Serialize(@customerNotificaticationsDisabledEvent)}", customerNotificaticationsDisabledEvent);
         
-        var customer = await _context.Customers.FirstOrDefaultAsync(x => x.Email == @event.Email);
+        var customer = await _context.Customers.FirstOrDefaultAsync(x => x.Email == customerNotificaticationsDisabledEvent.Email);
         customer.NotificationsDisabled = true;
         await _context.SaveChangesAsync();
-        _logger.LogInformation("Customer Notifications Disabled", @event);
+        _logger.LogInformation("Customer Notifications Disabled", customerNotificaticationsDisabledEvent);
     }
 }

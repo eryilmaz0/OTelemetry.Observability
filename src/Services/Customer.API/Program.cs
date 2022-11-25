@@ -11,6 +11,7 @@ using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>();
+builder.Services.AddCustomTracerSupport();
 
 builder.Services.AddMassTransit(x=>
 {
@@ -38,14 +40,15 @@ builder.Services.AddMassTransit(x=>
             consumer.ConfigureConsumer<CustomerNotificationDisabledEventHandler>(context);
         });
     });
-});
+}); 
 
 TracingOptions tracingOptions = builder.Configuration.GetSection("TracingOptions").Get<TracingOptions>();
 MetricOptions metricOptions = builder.Configuration.GetSection("MetricOptions").Get<MetricOptions>();
 LoggingOptions loggingOptions = builder.Configuration.GetSection("LoggingOptions").Get<LoggingOptions>();
 builder.Services.AddMetricSupport(metricOptions);
 builder.Services.AddTracingSupport(tracingOptions);
-builder.Logging.AddLoggingSupport(loggingOptions);
+builder.Logging.AddLoggingSupport(loggingOptions); 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
