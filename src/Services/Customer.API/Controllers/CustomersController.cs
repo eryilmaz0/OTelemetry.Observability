@@ -42,7 +42,7 @@ public class CustomersController : ControllerBase
         await _context.SaveChangesAsync();
         _logger.LogInformation("Customer Added");
 
-        CustomerCreatedEvent @event = new()
+        CustomerCreatedEvent customerCreatedEvent = new()
         {
             Email = request.Email,
             Name = request.Name,
@@ -53,13 +53,13 @@ public class CustomersController : ControllerBase
 
         Dictionary<string, string> eventPublishMetrics = new()
         {
-            { "PublishingEvent", JsonSerializer.Serialize(@event) },
-            { "EventType", @event.GetType().Name }
+            { "PublishingEvent", JsonSerializer.Serialize(customerCreatedEvent) },
+            { "EventType", customerCreatedEvent.GetType().Name }
         };
         _tracer.Trace(OperationType.EventPublish, "Publishing Event!", eventPublishMetrics);
 
-        await _eventPublisher.Publish(@event);
-        _logger.LogInformation("Event Published!", @event);
+        await _eventPublisher.Publish(customerCreatedEvent);
+        _logger.LogInformation($"Event Published! {JsonSerializer.Serialize(customerCreatedEvent)}", customerCreatedEvent);
         return Ok(new{Status = 200, Message="Customer Added."});
     }
 }
