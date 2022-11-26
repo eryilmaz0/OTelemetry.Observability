@@ -28,30 +28,38 @@ public class NotificationsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> DisableCustomerNotifications(DisableCustomerNotificationModel request)
     {
-        var newNotification = new Model.Notification()
+        try
         {
-            Email = request.Email,
-            NotificationType = "Disabled Notifications"
-        };
+            var newNotification = new Model.Notification()
+            {
+                Email = request.Email,
+                NotificationType = "Disabled Notifications"
+            };
 
-        await _cacheProxy.AddAsync(newNotification);
-        _logger.LogInformation("Disable Notification Record Added.");
+            await _cacheProxy.AddAsync(newNotification);
+            _logger.LogInformation("Disable Notification Record Added.");
 
-        CustomerNotificationsDisabledEvent @event = new()
-        {
-            Email = request.Email,
-            Created = DateTime.UtcNow
-        };
+            CustomerNotificationsDisabledEvent @event = new()
+            {
+                Email = request.Email,
+                Created = DateTime.UtcNow
+            };
         
-        Dictionary<string, string> eventPublishMetrics = new()
-        {
-            { "PublishingEvent", JsonSerializer.Serialize(@event) },
-            { "EventType", @event.GetType().Name }
-        };
-        _tracer.Trace(OperationType.EventPublish, "Publishing Event!", eventPublishMetrics);
-        _logger.LogInformation($"Event Published! {JsonSerializer.Serialize(eventPublishMetrics)}");
+            Dictionary<string, string> eventPublishMetrics = new()
+            {
+                { "PublishingEvent", JsonSerializer.Serialize(@event) },
+                { "EventType", @event.GetType().Name }
+            };
+            _tracer.Trace(OperationType.EventPublish, "Publishing Event!", eventPublishMetrics);
+            _logger.LogInformation($"Event Published! {JsonSerializer.Serialize(eventPublishMetrics)}");
         
-        await _eventPublisher.Publish(@event);
-        return Ok(new{Status = 200, Message="Customer Notifications Disabled."});
+            await _eventPublisher.Publish(@event);
+            return Ok(new{Status = 200, Message="Customer Notifications Disabled."});
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, e.StackTrace);
+            return BadRequest(e.Message);
+        }
     }
 }

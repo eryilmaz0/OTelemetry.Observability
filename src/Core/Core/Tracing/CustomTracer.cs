@@ -5,6 +5,7 @@ namespace Core.Tracing;
 public interface ICustomTracer
 {
     public void Trace(OperationType operationType, string actionName, IDictionary<string, string> metrics);
+    public string GetCurrentTraceId();
 }
 
 
@@ -24,6 +25,8 @@ public class OpenTelemetryCustomTracer : ICustomTracer
         SetDefaultAttributes(activSpan);
         activSpan.End();
     }
+
+    public string GetCurrentTraceId() => Tracer.CurrentSpan.Context.TraceId.ToString();
     
     
     private static void SetDefaultAttributes(TelemetrySpan span)

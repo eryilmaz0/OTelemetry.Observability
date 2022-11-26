@@ -27,7 +27,7 @@ public class NotificationsController : ControllerBase
         Stopwatch timer = new();
         timer.Start();
         
-        _logger.LogInformation("Disable Cutomer Notifications Request Started");
+        _logger.LogInformation("Disable Customer Notifications Request Started");
         var result = await _notificationServiceClient.DisableCustomerNotificationsAsync(request);
         
         timer.Stop();
@@ -40,7 +40,7 @@ public class NotificationsController : ControllerBase
         };
         
         _tracer.Trace(OperationType.ActionExecution, "Action Executed!", executionMetrics);
-        _logger.LogInformation("Disable Cutomer Notifications Request Completed");
+        _logger.LogInformation("Disable Customer Notifications Request Completed");
         
         if (!result.Succeed)
             return BadRequest(result);

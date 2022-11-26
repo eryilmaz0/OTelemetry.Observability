@@ -30,36 +30,50 @@ public class CustomersController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateCustomer(CreateCustomerModel request)
     {
-        await _context.Customers.AddAsync(new()
+        try
         {
-            Email = request.Email,
-            Name = request.Name,
-            LastName = request.LastName,
-            Age = request.Age,
-            Created = DateTime.UtcNow
-        });
+            if (request.Age <= 0)
+                throw new ArgumentException("Age Can Not Be <= 0.");
 
-        await _context.SaveChangesAsync();
-        _logger.LogInformation("Customer Added");
+            _logger.LogInformation($"Current TraceId Check : {_tracer.GetCurrentTraceId()}");
+            await Task.Delay(3000);
+            _logger.LogInformation($"Current TraceId Second Check: {_tracer.GetCurrentTraceId()}");
+            await _context.Customers.AddAsync(new()
+            {
+                Email = request.Email,
+                Name = request.Name,
+                LastName = request.LastName,
+                Age = request.Age,
+                Created = DateTime.UtcNow
+            });
 
-        CustomerCreatedEvent customerCreatedEvent = new()
+            await _context.SaveChangesAsync();
+            _logger.LogInformation("Customer Added");
+
+            CustomerCreatedEvent customerCreatedEvent = new()
+            {
+                Email = request.Email,
+                Name = request.Name,
+                LastName = request.LastName,
+                Age = request.Age,
+                Created = DateTime.UtcNow
+            };
+
+            Dictionary<string, string> eventPublishMetrics = new()
+            {
+                { "PublishingEvent", JsonSerializer.Serialize(customerCreatedEvent) },
+                { "EventType", customerCreatedEvent.GetType().Name }
+            };
+            _tracer.Trace(OperationType.EventPublish, "Publishing Event!", eventPublishMetrics);
+
+            await _eventPublisher.Publish(customerCreatedEvent);
+            _logger.LogInformation($"Event Published! {JsonSerializer.Serialize(customerCreatedEvent)}", customerCreatedEvent);
+            return Ok(new{Status = 200, Message="Customer Added."});
+        }
+        catch (Exception e)
         {
-            Email = request.Email,
-            Name = request.Name,
-            LastName = request.LastName,
-            Age = request.Age,
-            Created = DateTime.UtcNow
-        };
-
-        Dictionary<string, string> eventPublishMetrics = new()
-        {
-            { "PublishingEvent", JsonSerializer.Serialize(customerCreatedEvent) },
-            { "EventType", customerCreatedEvent.GetType().Name }
-        };
-        _tracer.Trace(OperationType.EventPublish, "Publishing Event!", eventPublishMetrics);
-
-        await _eventPublisher.Publish(customerCreatedEvent);
-        _logger.LogInformation($"Event Published! {JsonSerializer.Serialize(customerCreatedEvent)}", customerCreatedEvent);
-        return Ok(new{Status = 200, Message="Customer Added."});
+            _logger.LogError(e, e.StackTrace);
+            return BadRequest(e.Message);
+        }
     }
 }
