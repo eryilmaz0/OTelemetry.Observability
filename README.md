@@ -30,6 +30,7 @@ You can export the application data directly to the observability applications. 
 <p align="center">
  <img src="resources/otelexport1.png"  width="600" height="350" title="Otel Exporters">
 </p></br>
+
 ### 2. Open Telemetry Collector
 Open Telemetry Collector is an open source project that Open Telemetry provides. It works like a middleware application, and collects data from applications. Can be configure to export collected datas to observability applications.
 
