@@ -22,24 +22,23 @@ OpenTelemetry is a set of APIs, SDKs, tooling and integrations that are designed
 
 
 ## Data Exporting with Open Telemetry
-There are 2 different way to export application data from Open Telemetry.
+There are 2 different way to export system data from Open Telemetry.
 
 ### 1. Exporter Modules
-You can export the application data directly to the observability applications. To do this, you can use Open Telemetry exporter modules. You can see all the exporters from <a href=https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/src>here</a>.
+You can export the data directly into monitoring applications. To do this, you can use Open Telemetry exporter modules. You can see all the exporters from <a href=https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/src>here</a>
 
-<p align="center">
  <img src="resources/otelexport1.png"  width="600" height="350" title="Otel Exporters">
-</p></br>
+
 ### 2. Open Telemetry Collector
-Open Telemetry Collector is an open source project that Open Telemetry provides. It works like a middleware application, and collects data from applications. Can be configure to export collected datas to observability applications.
+Open Telemetry Collector is an open source project that Open Telemetry provides. It works like a middleware application, and collects data from applications. Can be configure to export collected datas into observability applications.
 
  <img src="resources/otelexport2.png" width="1000" height="350" title="Observability">
 
 
 ## About Project
-This project has written on .NET 6, and has implementations of the observability concepts such as logging, tracing and metrics. Uses Open Telemetry auto instrumentations to collect application data to convert trace and metrics, and logs.
+This project written on .NET 6, and has implementations of the observability concepts such as logging, tracing and metrics. Uses Open Telemetry auto instrumentations to collect system data to convert trace and metrics.
 
- All the services we created connect Open Telemetry Collector application, and export its own data with Open Telemetry Protocol (OTLP). By this way, we have fully agnostic implementation, our services only depend on OTLP exportor module. Open Telemetry takes care of everything else,  collects data, and exports to observability applications. </br></br>
+ All the services we created connects Open Telemetry Collector application, and export its own data with Open Telemetry Protocol (OTLP). By this way, we have fully agnostic implementation, our services only depend on OTLP exportor module. Open Telemetry takes care of everything else,  collects data, and export to observability applications. </br></br>
 
 **Open Telemetry Collector;** 
 - **Exports traces to Jaeger,**
