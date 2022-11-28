@@ -22,7 +22,7 @@ OpenTelemetry is a set of APIs, SDKs, tooling and integrations that are designed
 
 
 ## Data Exporting with Open Telemetry
-There are 2 different way to export application data from Open Telemetry.
+There are 2 different ways to export application data from Open Telemetry.
 
 ### 1. Exporter Modules
 You can export the application data directly to the observability applications. To do this, you can use Open Telemetry exporter modules. You can see all the exporters from <a href=https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/src>here</a>.
