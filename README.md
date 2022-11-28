@@ -55,8 +55,8 @@ Then you must clone the repository and locate to the repository folder.
 It is enough to run that commands to run the project.
 
 
-**```cd src```**<p></p>
-**```docker-compose --f docker-compose.yaml build```**<p></p>
+**```cd src```**
+**```docker-compose --f docker-compose.yaml build```**
 **```docker-compose --f docker-compose.override.yaml up```**
 
 </br>
