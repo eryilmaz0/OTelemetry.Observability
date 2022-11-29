@@ -39,7 +39,7 @@ Open Telemetry Collector is an open source project that Open Telemetry provides.
 
 ## About Project
 
- <img src="resources/architecture.png" height="550" title="Observability"></br></br>
+ <img src="resources/architecture.png" width="1000" height="400" title="Observability"></br></br>
 This project has written on .NET 6, and has implementations of the observability concepts such as logging, tracing and metrics. Uses Open Telemetry auto instrumentations to collect application data and convert traces, metrics and logs.
 
  All the services we created connect Open Telemetry Collector application, and export its own data with Open Telemetry Protocol (OTLP). By this way, we have fully agnostic implementation, our services only depend on OTLP exportor module. Open Telemetry takes care of everything else,  collects data, and exports to observability applications. </br></br>
