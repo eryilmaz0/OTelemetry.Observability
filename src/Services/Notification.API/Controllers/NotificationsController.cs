@@ -51,7 +51,7 @@ public class NotificationsController : ControllerBase
                 { "EventType", @event.GetType().Name }
             };
             _tracer.Trace(OperationType.EventPublish, "Publishing Event!", eventPublishMetrics);
-            _logger.LogInformation($"Event Published! {JsonSerializer.Serialize(eventPublishMetrics)}");
+            _logger.LogInformation($"Event Published! {JsonSerializer.Serialize(@event)}");
         
             await _eventPublisher.Publish(@event);
             return Ok(new{Status = 200, Message="Customer Notifications Disabled."});
