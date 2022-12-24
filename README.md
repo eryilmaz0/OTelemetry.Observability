@@ -67,6 +67,6 @@ It is enough to run that commands to run the project.
 - **you can go **http://localhost:8001/swagger/index.html** to reach Backend for Frontend project Swagger UI, and you can make requests.** 
 - **you can go **http://localhost:16686/search** to reach Jaeger UI, and you can list the traces.**
 - **you can go **http://localhost:9090/** to reach Prometheus UI, and you can monitor the application metrics.**
-- **you can go **http://localhost:5601/** to reach Kibana UI. You can create an index pattern with "logs-generic-default" name, and list the application logs.**</br>
+- **you can go **http://localhost:5601/** to reach Kibana UI. You can create an index pattern with "logs-generic-default" name, and list the application logs.**</br></br>
 
 İf you are looking for more details, you can check the <a href=https://github.com/open-telemetry/opentelemetry-dotnet/tree/main/src>article</a> that i wrote on medium.
